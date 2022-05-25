@@ -1,5 +1,6 @@
 import React from "react"
 import "./style.css"
+import _ from 'lodash'
 
 const GRID = [
 	[{row: 0, col: 0},{row: 0, col: 1},{row: 0, col: 2},
@@ -216,7 +217,26 @@ class SudokuBoardEasy extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			cells: EASY_GAME,
+			history: [
+				{
+					cells: EASY_GAME,
+					highlights: [
+						[false, false, false, false, false, false, false, false, false],
+						[false, false, false, false, false, false, false, false, false],
+						[false, false, false, false, false, false, false, false, false],
+						[false, false, false, false, false, false, false, false, false],
+						[false, false, false, false, false, false, false, false, false],
+						[false, false, false, false, false, false, false, false, false],
+						[false, false, false, false, false, false, false, false, false],
+						[false, false, false, false, false, false, false, false, false],
+						[false, false, false, false, false, false, false, false, false]
+					],
+					selectedBox: {
+						cell: null,
+						box: null
+					}
+				}
+			],
 			highlights: [
 				[false, false, false, false, false, false, false, false, false],
 				[false, false, false, false, false, false, false, false, false],
@@ -237,13 +257,17 @@ class SudokuBoardEasy extends React.Component {
 		this.handleClick = this.handleClick.bind(this);
 		this.handleButtonClick = this.handleButtonClick.bind(this);
 		this.handleClearClick = this.handleClearClick.bind(this);
+		this.handleUndoClick = this.handleUndoClick.bind(this);
 	}
 
 	handleClick(i, j) {
-		const highlights = this.state.highlights.slice()
+		const history = this.state.history.slice(0, this.state.history.length)
+		const current = history[history.length - 1]
+		const cells = _.cloneDeep(current.cells.slice())
+		const highlights = _.cloneDeep(this.state.highlights.slice())
 		const hightlightRow = GRID[i][j].row
 		const hightlightCol = GRID[i][j].col
-		if (puzzleComplete(this.state.cells, EASY_SOL) || this.state.mistakes >= 3) {
+		if (puzzleComplete(cells, EASY_SOL) || this.state.mistakes >= 3) {
 			return
 		}
 		const selectedBox = {
@@ -260,7 +284,7 @@ class SudokuBoardEasy extends React.Component {
 			}
 		}
 		this.setState({
-			cells: this.state.cells,
+			history: history,
 			highlights: highlights,
 			selectedBox: selectedBox,
 			mistakes: this.state.mistakes
@@ -268,11 +292,15 @@ class SudokuBoardEasy extends React.Component {
 	}
 
 	handleButtonClick(value) {
-		const cells = this.state.cells.slice()
+		const history = this.state.history.slice(0, this.state.history.length)
+		const current = history[history.length - 1]
+		const cells = _.cloneDeep(current.cells.slice())
+		const highlights = _.cloneDeep(this.state.highlights.slice())
+		const i =  this.state.selectedBox.cell
+		const j =  this.state.selectedBox.box
+
 		let numMistakes = this.state.mistakes
-		const i = this.state.selectedBox.cell
-		const j = this.state.selectedBox.box
-		if (puzzleComplete(this.state.cells, EASY_SOL) || this.state.mistakes >= 3) {
+		if (puzzleComplete(cells, EASY_SOL) || numMistakes >= 3) {
 			return
 		}
 		if (i !== null && j !== null) {
@@ -287,19 +315,28 @@ class SudokuBoardEasy extends React.Component {
 				}
 			}
 			this.setState({
-				cells: cells,
-				highlights: this.state.highlights,
+				history: history.concat([
+					{
+						cells: cells,
+						highlights: highlights,
+						selectedBox: this.state.selectedBox,
+					}
+				]),
+				highlights: highlights,
 				selectedBox: this.state.selectedBox,
 				mistakes: numMistakes
-			});
+			})
 		}
 	}
 
 	handleClearClick() {
-		const cells = this.state.cells.slice()
+		const history = this.state.history.slice(0, this.state.history.length)
+		const current = history[history.length - 1]
+		const cells = _.cloneDeep(current.cells.slice())
+		const highlights = _.cloneDeep(this.state.highlights.slice())
 		const i = this.state.selectedBox.cell
 		const j = this.state.selectedBox.box
-		if (puzzleComplete(this.state.cells, EASY_SOL) || this.state.mistakes >= 3) {
+		if (puzzleComplete(cells, EASY_SOL) || this.state.mistakes >= 3) {
 			return
 		}
 		if (i !== null && j !== null) {
@@ -307,29 +344,53 @@ class SudokuBoardEasy extends React.Component {
 				cells[i][j] = null
 			}
 			this.setState({
-				cells: cells,
-				highlights: this.state.highlights,
+				history: history.concat([
+					{
+						cells: cells,
+						highlights: highlights,
+						selectedBox: this.state.selectedBox,
+					}
+				]),
+				highlights: highlights,
 				selectedBox: this.state.selectedBox,
 				mistakes: this.state.mistakes
-			});
+			})
 		}
 	}
 
+	handleUndoClick() {
+		const history = this.state.history.slice(0, this.state.history.length === 1 ? 1 : this.state.history.length - 1)
+		const current = history[history.length - 1]
+		const highlights = current.highlights.slice()
+		const selectedBox = current.selectedBox
+		
+		this.setState({
+			history: history,
+			highlights: highlights,
+			selectedBox: selectedBox,
+			mistakes: this.state.mistakes
+		})
+	}
+
 	renderSquare(i, j) {
-		const selectedCell = this.state.selectedBox.cell
-		const selectedBox = this.state.selectedBox.box
+		const history = this.state.history.slice(0, this.state.history.length)
+		const current = history[history.length - 1]
+		const cells = _.cloneDeep(current.cells.slice())
+		const highlights = this.state.highlights.slice()
+		const cell = this.state.selectedBox.cell
+		const box = this.state.selectedBox.box
 
 		let bgColourBox= "white"
-		if (puzzleComplete(this.state.cells, EASY_SOL)) {
+		if (puzzleComplete(cells, EASY_SOL)) {
 			bgColourBox = "cornsilk"
 		} else if (this.state.mistakes >= 3) {
 			bgColourBox = "rgb(220, 220, 220)"
-		} else if (selectedCell !== null && selectedBox !== null && !puzzleComplete(this.state.cells, EASY_SOL) && this.state.mistakes < 3) {
-			if (i === selectedCell && j === selectedBox) {
+		} else if (cell !== null && box !== null && !puzzleComplete(cells, EASY_SOL) && this.state.mistakes < 3) {
+			if (i === cell && j === box) {
 				bgColourBox = "lightskyblue"
-			} else if (this.state.cells[i][j] === this.state.cells[selectedCell][selectedBox] && this.state.cells[i][j] !== null) {
-				bgColourBox = this.state.highlights[i][j] ? "pink" : "rgb(197, 197, 197)"
-			} else if (this.state.highlights[i][j]) {
+			} else if (cells[i][j] === cells[cell][box] && cells[i][j] !== null) {
+				bgColourBox = highlights[i][j] ? "pink" : "rgb(197, 197, 197)"
+			} else if (highlights[i][j]) {
 				bgColourBox = "rgb(220, 220, 220)"
 			} else {
 				bgColourBox = "white"
@@ -343,7 +404,7 @@ class SudokuBoardEasy extends React.Component {
 				onClick={() => this.handleClick(i, j)} />
 		} else {
 			return <MutableSquare 
-				value={this.state.mistakes < 3 ? this.state.cells[i][j] : null} 
+				value={this.state.mistakes < 3 ? cells[i][j] : null} 
 				bgColour={bgColourBox}
 				onClick={() => this.handleClick(i, j)} 
 				solution={EASY_SOL[i][j]} 
@@ -374,12 +435,16 @@ class SudokuBoardEasy extends React.Component {
 	}
 
 	render() {
+		const history = this.state.history.slice(0, this.state.history.length + 1)
+		const current = history[history.length - 1]
+		const cells = current.cells.slice()
+
 		let status
 		let statusColour
 		if (this.state.mistakes >= 3) {
 			status = "Game Over"
 			statusColour = "red"
-		} else if (puzzleComplete(this.state.cells, EASY_SOL)) {
+		} else if (puzzleComplete(cells, EASY_SOL)) {
 			status = "Complete!"
 			statusColour = "mediumseagreen"
 		} else {
@@ -387,7 +452,7 @@ class SudokuBoardEasy extends React.Component {
 			statusColour = "black"
 		}
 		const mistakesMessage = `Number of mistakes: ${this.state.mistakes}/3`
-		console.log(this.state.cells)
+		console.log(history)
 
 		return (
 		<div>
@@ -411,19 +476,20 @@ class SudokuBoardEasy extends React.Component {
 			</div>
 			<div>
 				<button className={status === "In Progress..." ? "btn-modes" : "btn-modes-blank"} onClick={() => this.handleClearClick()}>{status === "In Progress..." ? "Erase" : ""}</button>
+				<button className={status === "In Progress..." ? "btn-modes" : "btn-modes-blank"} onClick={() => this.handleUndoClick()}>{status === "In Progress..." ? "Undo" : ""}</button>
 				{/* <button className="btn-modes">Undo</button>
 				<button className="btn-modes">Notes</button> */}
 			</div>
 			<div>
-				<NumberButton value={1} onClick={() => this.handleButtonClick(1)} cells={this.state.cells} mistakes={this.state.mistakes} />
-				<NumberButton value={2} onClick={() => this.handleButtonClick(2)} cells={this.state.cells} mistakes={this.state.mistakes} />
-				<NumberButton value={3} onClick={() => this.handleButtonClick(3)} cells={this.state.cells} mistakes={this.state.mistakes} />
-				<NumberButton value={4} onClick={() => this.handleButtonClick(4)} cells={this.state.cells} mistakes={this.state.mistakes} />
-				<NumberButton value={5} onClick={() => this.handleButtonClick(5)} cells={this.state.cells} mistakes={this.state.mistakes} />
-				<NumberButton value={6} onClick={() => this.handleButtonClick(6)} cells={this.state.cells} mistakes={this.state.mistakes} />
-				<NumberButton value={7} onClick={() => this.handleButtonClick(7)} cells={this.state.cells} mistakes={this.state.mistakes} />
-				<NumberButton value={8} onClick={() => this.handleButtonClick(8)} cells={this.state.cells} mistakes={this.state.mistakes} />
-				<NumberButton value={9} onClick={() => this.handleButtonClick(9)} cells={this.state.cells} mistakes={this.state.mistakes} />
+				<NumberButton value={1} onClick={() => this.handleButtonClick(1)} cells={cells} mistakes={this.state.mistakes} />
+				<NumberButton value={2} onClick={() => this.handleButtonClick(2)} cells={cells} mistakes={this.state.mistakes} />
+				<NumberButton value={3} onClick={() => this.handleButtonClick(3)} cells={cells} mistakes={this.state.mistakes} />
+				<NumberButton value={4} onClick={() => this.handleButtonClick(4)} cells={cells} mistakes={this.state.mistakes} />
+				<NumberButton value={5} onClick={() => this.handleButtonClick(5)} cells={cells} mistakes={this.state.mistakes} />
+				<NumberButton value={6} onClick={() => this.handleButtonClick(6)} cells={cells} mistakes={this.state.mistakes} />
+				<NumberButton value={7} onClick={() => this.handleButtonClick(7)} cells={cells} mistakes={this.state.mistakes} />
+				<NumberButton value={8} onClick={() => this.handleButtonClick(8)} cells={cells} mistakes={this.state.mistakes} />
+				<NumberButton value={9} onClick={() => this.handleButtonClick(9)} cells={cells} mistakes={this.state.mistakes} />
 			</div>
 		</div>
 		);

@@ -2,7 +2,8 @@ import React from "react"
 import { Link, useLocation, Outlet } from "react-router-dom"
 import "./style.css"
 import {TicTacToeGame} from "./TicTacToe"
-import {SudokuGameEasy} from "./SudokuWIP"
+import {SudokuGameEasy} from "./Sudoku"
+import {Game} from "./components/Sudoku/Game"
 
 export function Home() {
 	const games = [
@@ -85,10 +86,27 @@ export function EasySudoku() {
 }
 
 export function MediumSudoku() {
+	const levels = [
+		{id: 1, name: "Easy", url: "sudoku-easy"},
+		{id: 3, name: "Hard", url: "sudoku-hard"},
+		{id: 4, name: "Expert", url: "sudoku-expert"}
+	]
+
 	return (
 		<div>
 			<h1 style={{display: "flex", justifyContent: "center", paddingTop: "25px"}}>Sudoku</h1>
 			<h2 style={{display: "flex", justifyContent: "center", paddingTop: "35px"}}>Level: Medium</h2>
+			<h3 style={{display: "flex", justifyContent: "center", paddingTop: "25px"}}>THIS PAGE IS BROKEN</h3>
+			<Game />
+			<a href="sudoku-medium" style={{display: "flex", alignItems: "center",justifyContent: "center", paddingTop: "20px"}}>Reset Game</a>
+			<h3 style={{display: "flex", justifyContent: "center", paddingTop: "35px"}}>Try another level:</h3>
+			<ul>
+				{levels.map((level) => {
+					return (
+						<a key={level.id} href={level.url} style={{display: "flex", alignItems: "left",justifyContent: "center", paddingTop: "20px"}}>{level.name}</a>
+					)})
+				}
+			</ul>
 		</div>
 	);
 }

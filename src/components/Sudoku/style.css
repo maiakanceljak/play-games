@@ -1,0 +1,209 @@
+.PageHeading {
+    display: flex;
+    justify-content: "center";
+    padding-top: "25px";
+}
+
+/* body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+    margin: 20px;
+} */
+
+ol, ul {
+    padding-left: 30px;
+}
+
+.board-row:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.status {
+    margin-bottom: 10px;
+}
+
+.square {
+    background: #fff;
+    border: 1px solid #999;
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 34px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 34px;
+}
+
+.square:focus {
+    outline: none;
+}
+
+.kbd-navigation .square:focus {
+    background: #ddd;
+}
+
+.game {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.game-info {
+    margin-left: 20px;
+}
+
+.sudoku-square {
+    background: #fff;
+    border: 1px solid #999;
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 34px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 34px;
+}
+
+.cell-row {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.cell {
+    border: 2px solid black;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-right: -2px;
+}
+
+.row-cells {
+    clear: both;
+    content: "";
+    display: table;
+    margin-top: -6px;
+}
+
+.btn {
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+    text-align: center;
+    padding: 0;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 4.4px;
+    margin-top: 8px;
+    border-radius: 4px;
+    font-size: 18px;
+    color: #2c3be0;
+    background-color: white;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.btn:hover {
+    background: rgb(221, 221, 221);
+    color: #2c3be0;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+}
+
+.btn:active {
+    background: rgb(197, 197, 197);
+    color: #2c3be0;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+}
+
+.btn-blank {
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+    text-align: center;
+    padding: 0;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    margin-right: 4.4px;
+    margin-top: 8px;
+    border-radius: 4px;
+    font-size: 18px;
+    color: white;
+    background-color: white;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.btn-modes {
+    width: 70px;
+    height: 35px;
+    font-weight: bold;
+    text-align: center;
+    padding: 0;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 47.5px;
+    margin-top: 8px;
+    border-radius: 4px;
+    font-size: 20px;
+    color: #363636;
+    background-color: white;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.btn-modes:hover {
+    background: rgb(221, 221, 221);
+    color: #363636;
+    width: 70px;
+    height: 35px;
+    padding: 0;
+}
+
+.btn-modes:active {
+    background: rgb(197, 197, 197);
+    color: #363636;
+    width: 70px;
+    height: 35px;
+    padding: 0;
+}
+
+.btn-modes-blank {
+    width: 70px;
+    height: 35px;
+    font-weight: bold;
+    text-align: center;
+    padding: 0;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    margin-right: 47.5px;
+    margin-top: 8px;
+    border-radius: 4px;
+    font-size: 20px;
+    color: white;
+    background-color: white;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
