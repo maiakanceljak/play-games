@@ -141,7 +141,7 @@ export function handleBoxClick(game, cell, box, solution, history, cells) {
 		return game
 	}
 	if (history.length > 1 && game.lastClickBox) {
-		history[history].pop()
+		history.pop()
 	}
 	return {
 		history: history.concat({
