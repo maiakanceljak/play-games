@@ -74,7 +74,7 @@ function SudokuPage({levelTitle, link, SudokuGame}) {
 							<a key={level.id} href={level.url} style={{display: "flex", alignItems: "left",justifyContent: "center", paddingTop: "20px"}}>{level.name}</a>
 						)
 					}
-					return <></>
+					return <div key={level.id}>{}</div>
 				})}
 			</ul>
 		</div>

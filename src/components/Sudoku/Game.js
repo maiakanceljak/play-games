@@ -1,6 +1,6 @@
 import React from "react"
 import "./style.css"
-import _ from 'lodash'
+import { cloneDeep } from 'lodash'
 import { Board } from "./Board"
 import { numAllUsed, gameStatus, handleClearClick, handleUndoClick, handleNumberClick } from "./utils"
 
@@ -20,7 +20,7 @@ function ClearButton({status, onClick, message}) {
 export function Game({initial, solution, game, setGame}) {
 	const history = [...game.history]
 	const current = history[history.length - 1]
-	const cells = _.cloneDeep([...current.cells])
+	const cells = cloneDeep([...current.cells])
 	const status = gameStatus(game.mistakes, solution, cells)
 
 	return (

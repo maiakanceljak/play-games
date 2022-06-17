@@ -1,5 +1,6 @@
 import _ from 'lodash'
 
+// eslint-disable-next-line
 const BASE_GAME = [
 	[null, null, null,
     null, null, null,
@@ -39,36 +40,37 @@ const BASE_GAME = [
 ]
 
 const GRID = [
-	[{row: 0, col: 0},{row: 0, col: 1},{row: 0, col: 2},
-		{row: 1, col: 0},{row: 1, col: 1},{row: 1, col: 2},
-		{row: 2, col: 0},{row: 2, col: 1},{row: 2, col: 2}],
-	[{row: 0, col: 3},{row: 0, col: 4},{row: 0, col: 5},
-		{row: 1, col: 3},{row: 1, col: 4},{row: 1, col: 5},
-		{row: 2, col: 3},{row: 2, col: 4},{row: 2, col: 5}],
-	[{row: 0, col: 6},{row: 0, col: 7},{row: 0, col: 8},
-		{row: 1, col: 6},{row: 1, col: 7},{row: 1, col: 8},
-		{row: 2, col: 6},{row: 2, col: 7},{row: 2, col: 8}],
+	[{i: 0, j: 0},{i: 0, j: 1},{i: 0, j: 2},
+		{i: 1, j: 0},{i: 1, j: 1},{i: 1, j: 2},
+		{i: 2, j: 0},{i: 2, j: 1},{i: 2, j: 2}],
+	[{i: 0, j: 3},{i: 0, j: 4},{i: 0, j: 5},
+		{i: 1, j: 3},{i: 1, j: 4},{i: 1, j: 5},
+		{i: 2, j: 3},{i: 2, j: 4},{i: 2, j: 5}],
+	[{i: 0, j: 6},{i: 0, j: 7},{i: 0, j: 8},
+		{i: 1, j: 6},{i: 1, j: 7},{i: 1, j: 8},
+		{i: 2, j: 6},{i: 2, j: 7},{i: 2, j: 8}],
 	
-	[{row: 3, col: 0},{row: 3, col: 1},{row: 3, col: 2},
-		{row: 4, col: 0},{row: 4, col: 1},{row: 4, col: 2},
-		{row: 5, col: 0},{row: 5, col: 1},{row: 5, col: 2}],
-	[{row: 3, col: 3},{row: 3, col: 4},{row: 3, col: 5},
-		{row: 4, col: 3},{row: 4, col: 4},{row: 4, col: 5},
-		{row: 5, col: 3},{row: 5, col: 4},{row: 5, col: 5}],
-	[{row: 3, col: 6},{row: 3, col: 7},{row: 3, col: 8},
-		{row: 4, col: 6},{row: 4, col: 7},{row: 4, col: 8},
-		{row: 5, col: 6},{row: 5, col: 7},{row: 5, col: 8}],
+	[{i: 3, j: 0},{i: 3, j: 1},{i: 3, j: 2},
+		{i: 4, j: 0},{i: 4, j: 1},{i: 4, j: 2},
+		{i: 5, j: 0},{i: 5, j: 1},{i: 5, j: 2}],
+	[{i: 3, j: 3},{i: 3, j: 4},{i: 3, j: 5},
+		{i: 4, j: 3},{i: 4, j: 4},{i: 4, j: 5},
+		{i: 5, j: 3},{i: 5, j: 4},{i: 5, j: 5}],
+	[{i: 3, j: 6},{i: 3, j: 7},{i: 3, j: 8},
+		{i: 4, j: 6},{i: 4, j: 7},{i: 4, j: 8},
+		{i: 5, j: 6},{i: 5, j: 7},{i: 5, j: 8}],
 
-	[{row: 6, col: 0},{row: 6, col: 1},{row: 6, col: 2},
-		{row: 7, col: 0},{row: 7, col: 1},{row: 7, col: 2},
-		{row: 8, col: 0},{row: 8, col: 1},{row: 8, col: 2}],
-	[{row: 6, col: 3},{row: 6, col: 4},{row: 6, col: 5},
-		{row: 7, col: 3},{row: 7, col: 4},{row: 7, col: 5},
-		{row: 8, col: 3},{row: 8, col: 4},{row: 8, col: 5}],
-	[{row: 6, col: 6},{row: 6, col: 7},{row: 6, col: 8},
-		{row: 7, col: 6},{row: 7, col: 7},{row: 7, col: 8},
-		{row: 8, col: 6},{row: 8, col: 7},{row: 8, col: 8}]
+	[{i: 6, j: 0},{i: 6, j: 1},{i: 6, j: 2},
+		{i: 7, j: 0},{i: 7, j: 1},{i: 7, j: 2},
+		{i: 8, j: 0},{i: 8, j: 1},{i: 8, j: 2}],
+	[{i: 6, j: 3},{i: 6, j: 4},{i: 6, j: 5},
+		{i: 7, j: 3},{i: 7, j: 4},{i: 7, j: 5},
+		{i: 8, j: 3},{i: 8, j: 4},{i: 8, j: 5}],
+	[{i: 6, j: 6},{i: 6, j: 7},{i: 6, j: 8},
+		{i: 7, j: 6},{i: 7, j: 7},{i: 7, j: 8},
+		{i: 8, j: 6},{i: 8, j: 7},{i: 8, j: 8}]
 ]
+
 
 export const basicGrid = [[0,1,2],[3,4,5],[6,7,8]]
 
@@ -116,7 +118,7 @@ export function highlightColour(selectedCell, selectedBox, cell, box, cells, mis
 		return "lightskyblue"
 	}
 
-	const highlight = (cell === selectedCell || GRID[cell][box].row === GRID[selectedCell][selectedBox].row || GRID[cell][box].col === GRID[selectedCell][selectedBox].col)
+	const highlight = (cell === selectedCell || GRID[cell][box].i === GRID[selectedCell][selectedBox].i || GRID[cell][box].j === GRID[selectedCell][selectedBox].j)
 	if (cells[selectedCell][selectedBox] === cells[cell][box]  && cells[cell][box] !== null) {
 		return highlight ? "pink" : "rgb(197, 197, 197)"
 	}
@@ -176,6 +178,7 @@ export function handleClearClick(game, cell, box, initial, solution, history, ce
 	return game
 }
 
+// SMTH IS WRONG W THIS ONE
 export function handleUndoClick(game, history) {
 	if (history.length <= 1) {
 		return game
@@ -183,8 +186,9 @@ export function handleUndoClick(game, history) {
 	if (game.lastClickBox) {
 		history.pop()
 	}
+
 	const current = history[history.length - 1]
-	if (current.cells[current.selected.cell][current.selected.box]) {
+	if (current.selected.cell && current.selected.box && current.cells[current.selected.cell][current.selected.box]) {
 		const cells = _.cloneDeep([...current.cells])
 		const cell = current.selected.cell
 		const box = current.selected.box
@@ -200,11 +204,11 @@ export function handleUndoClick(game, history) {
 		}
 	}
 	history.pop()
-		return {
-			history: history,
-			mistakes: game.mistakes,
-			lastClickBox: false
-		}
+	return {
+		history: history,
+		mistakes: game.mistakes,
+		lastClickBox: false
+	}
 }
 
 export function handleNumberClick(value, game, cell, box, initial, solution, history, cells) {
@@ -235,4 +239,10 @@ export function handleNumberClick(value, game, cell, box, initial, solution, his
 		mistakes: mistakes,
 		lastClickBox: false
 	}
+}
+
+export function getFirstEmptyCell(initial) {
+	return GRID.map(
+		row => row.find(box => initial[box.i][box.j] === null)
+	)[0]
 }

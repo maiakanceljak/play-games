@@ -1,6 +1,6 @@
 import React from "react"
 import "./style.css"
-import _ from 'lodash'
+import { cloneDeep } from 'lodash'
 import { basicGrid, highlightColour, handleBoxClick } from "./utils"
 
 function Square({fixed, colour, value, solution, onClick}) {
@@ -23,7 +23,7 @@ function Square({fixed, colour, value, solution, onClick}) {
 function Cell({game, cell, initial, solution, setGame}) {
 	const history = [...game.history]
 	const current = history[game.history.length - 1]
-	const cells = _.cloneDeep([...current.cells])
+	const cells = cloneDeep([...current.cells])
 
 	return (
 		<div className="cell">
