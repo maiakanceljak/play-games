@@ -1,13 +1,34 @@
-import React from "react"
 import "./style.css"
 import { cloneDeep } from 'lodash'
-import { basicGrid, highlightColour, handleBoxClick } from "./utils"
+import { basicGrid, highlightColour, handleBoxClick, GameType } from "./utils"
 
-function Square({fixed, colour, value, solution, onClick}) {
+type SquareProps = {
+	fixed: number | null;
+	colour: string;
+	value: number | null;
+	solution: number;
+	onClick: () => void;
+}
+
+type CellProps = {
+	game: GameType
+	cell: number;
+	initial: (number | null)[][];
+	solution: number[][];
+	setGame: Function;
+}
+
+type BoardProps = {
+	game: GameType
+	initial: (number | null)[][];
+	solution: number[][];
+	setGame: Function;
+}
+
+function Square({fixed, colour, value, solution, onClick}: SquareProps) {
 	return (
 		<p 
 			className="sudoku-square" 
-			value={value}
 			onClick={onClick} 
 			style={{
 				color: fixed ? "black" : value === solution ? "#2c3be0" : "red", 
@@ -20,7 +41,7 @@ function Square({fixed, colour, value, solution, onClick}) {
 	)
 }
 
-function Cell({game, cell, initial, solution, setGame}) {
+function Cell({game, cell, initial, solution, setGame}: CellProps) {
 	const history = [...game.history]
 	const current = history[game.history.length - 1]
 	const cells = cloneDeep([...current.cells])
@@ -28,8 +49,8 @@ function Cell({game, cell, initial, solution, setGame}) {
 	return (
 		<div className="cell">
 			{basicGrid.map(i =>
-				<div key={i} className="cell-row">{
-					i.map(box =>
+				<div key={i.id} className="cell-row">{
+					i.inner.map(box =>
 						<Square 
 							key={box}
 							fixed={initial[cell][box]}
@@ -44,12 +65,12 @@ function Cell({game, cell, initial, solution, setGame}) {
 	)
 }
 
-export function Board({game, initial, solution, setGame}) {
+export function Board({game, initial, solution, setGame}: BoardProps) {
 	return (
 		<>
 			{basicGrid.map(i =>
-				<div key={i} className="row-cells">{
-					i.map(j =>
+				<div key={i.id} className="row-cells">{
+					i.inner.map(j =>
 						<Cell key={j} game={game} cell={j} initial={initial} solution={solution} setGame={setGame} />)}
 				</div>
 			)}

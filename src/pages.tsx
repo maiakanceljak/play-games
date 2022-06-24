@@ -1,7 +1,6 @@
-import React from "react"
-import { Link, useLocation, Outlet } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import "./style.css"
-import {TicTacToeGame} from "./TicTacToe"
+import { TicTacToeGame } from "./TicTacToe"
 import { EasyGame, MediumGame, HardGame, ExpertGame } from "./components/Sudoku/SudokuGames"
 
 const levels = [
@@ -37,7 +36,7 @@ export function TicTacToe() {
 	return (
 		<div >
 			<h1 style={{display: "flex", justifyContent: "center", paddingTop: "25px"}}>Tic Tac Toe</h1>
-			<TicTacToeGame style={{display: "flex", justifyContent: "center", paddingTop: "25px"}}/>
+			<TicTacToeGame />
 			<a href="tictactoe" style={{display: "flex", alignItems: "left",justifyContent: "center", paddingTop: "20px"}}>New Game</a>
 		</div> 
 	);    
@@ -59,7 +58,13 @@ export function Sudoku() {
 	);    
 }
 
-function SudokuPage({levelTitle, link, SudokuGame}) {
+type SudokuPageProps = {
+	levelTitle: string;
+	link: string;
+	SudokuGame: () => JSX.Element;
+}
+
+function SudokuPage({levelTitle, link, SudokuGame}: SudokuPageProps) {
 	return (
 		<div>
 			<h1 style={{display: "flex", justifyContent: "center", paddingTop: "25px"}}>Sudoku</h1>

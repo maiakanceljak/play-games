@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { cloneDeep } from 'lodash'
 
 // eslint-disable-next-line
 const BASE_GAME = [
@@ -72,10 +72,37 @@ const GRID = [
 ]
 
 
-export const basicGrid = [[0,1,2],[3,4,5],[6,7,8]]
+export const basicGrid = [
+	{
+		id: 0,
+		inner: [0,1,2]
+	},
+	{
+		id: 1,
+		inner: [3,4,5]
+	},
+	{
+		id: 2,
+		inner: [6,7,8]
+	}
+]
+
+type HistoryType = {
+	cells: (number | null)[][],
+	selected: {
+		cell: number;
+		box: number;
+}
+}
+
+export type GameType = {
+	history: HistoryType[],
+	mistakes: number,
+	lastClickBox: boolean
+}
 
 
-function puzzleComplete(cells, solution) {
+function puzzleComplete(cells: (number | null)[][], solution: number[][]) {
 	for (let i = 0; i < solution.length; i++) {
 		for (let j = 0; j < solution[i].length; j++) {
 			if (cells[i][j] !== solution[i][j]) {
@@ -86,7 +113,7 @@ function puzzleComplete(cells, solution) {
 	return true
 }
 
-export function numAllUsed(num, cells) {
+export function numAllUsed(num: number, cells: (number | null)[][]) {
 	let numUsed = 0
 	for (let i=0; i<9; i++) {
 		for (let j=0; j<9; j++) {
@@ -101,7 +128,15 @@ export function numAllUsed(num, cells) {
 	return false
 }
 
-export function highlightColour(selectedCell, selectedBox, cell, box, cells, mistakes, solution) {
+export function highlightColour(
+	selectedCell: number, 
+	selectedBox: number, 
+	cell: number, 
+	box: number, 
+	cells: (number | null)[][], 
+	mistakes: number, 
+	solution: number[][]
+) {
 	if (selectedCell === null || selectedBox === null) {
 		return "white"
 	}
@@ -126,7 +161,7 @@ export function highlightColour(selectedCell, selectedBox, cell, box, cells, mis
 	return highlight ? "rgb(220, 220, 220)" : "white"
 }
 
-export function gameStatus(mistakes, solution, cells) {
+export function gameStatus(mistakes: number, solution: number[][], cells: (number | null)[][]) {
 	if (mistakes >= 3) {
 		return {message: "Game Over", colour: "red"}
 	}
@@ -138,7 +173,14 @@ export function gameStatus(mistakes, solution, cells) {
 	return {message: "In Progress...", colour: "black"}
 }
 
-export function handleBoxClick(game, cell, box, solution, history, cells) {
+export function handleBoxClick(
+	game: GameType, 
+	cell: number, 
+	box: number, 
+	solution: number[][], 
+	history: HistoryType[], 
+	cells: (number | null)[][]
+	) {
 	if (puzzleComplete(cells, solution) || game.mistakes >= 3) {
 		return game
 	}
@@ -155,7 +197,15 @@ export function handleBoxClick(game, cell, box, solution, history, cells) {
 	}
 }
 
-export function handleClearClick(game, cell, box, initial, solution, history, cells) {
+export function handleClearClick(
+	game: GameType, 
+	cell: number, 
+	box: number,
+	initial: (number | null)[][], 
+	solution: number[][], 
+	history: HistoryType[], 
+	cells: (number | null)[][]
+	) {
 	if (puzzleComplete(cells, solution) || game.mistakes >= 3) {
 		return game
 	}
@@ -178,8 +228,7 @@ export function handleClearClick(game, cell, box, initial, solution, history, ce
 	return game
 }
 
-// SMTH IS WRONG W THIS ONE
-export function handleUndoClick(game, history) {
+export function handleUndoClick(game: GameType, history: HistoryType[]) {
 	if (history.length <= 1) {
 		return game
 	}
@@ -189,7 +238,7 @@ export function handleUndoClick(game, history) {
 
 	const current = history[history.length - 1]
 	if (current.selected.cell && current.selected.box && current.cells[current.selected.cell][current.selected.box]) {
-		const cells = _.cloneDeep([...current.cells])
+		const cells = cloneDeep([...current.cells])
 		const cell = current.selected.cell
 		const box = current.selected.box
 		cells[cell][box] = null
@@ -211,7 +260,15 @@ export function handleUndoClick(game, history) {
 	}
 }
 
-export function handleNumberClick(value, game, cell, box, initial, solution, history, cells) {
+export function handleNumberClick(
+	value: number | null, 
+	game: GameType, 
+	cell: number, 
+	box: number,
+	initial: (number | null)[][], 
+	solution: number[][], 
+	history: HistoryType[], 
+	cells: (number | null)[][]) {
 	if (puzzleComplete(cells, solution) || game.mistakes >= 3) {
 		return game
 	}
@@ -241,8 +298,13 @@ export function handleNumberClick(value, game, cell, box, initial, solution, his
 	}
 }
 
-export function getFirstEmptyCell(initial) {
+type EmptyCell = {
+	i: number,
+	j: number,
+}
+
+export function getFirstEmptyCell(initial: (number | null)[][]): EmptyCell {
 	return GRID.map(
 		row => row.find(box => initial[box.i][box.j] === null)
-	)[0]
+	)[0]!
 }

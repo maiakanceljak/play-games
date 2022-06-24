@@ -2,8 +2,6 @@ import React, { Component } from "react"
 import {MenuItems} from "./MenuItems"
 import "./Navbar.css"
 import 'font-awesome/css/font-awesome.min.css';
-import {Button} from "../Button"
-import { Link, useLocation, Outlet } from "react-router-dom"
 
 
 class Navbar extends Component {

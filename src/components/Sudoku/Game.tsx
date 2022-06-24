@@ -1,23 +1,40 @@
-import React from "react"
 import "./style.css"
 import { cloneDeep } from 'lodash'
 import { Board } from "./Board"
-import { numAllUsed, gameStatus, handleClearClick, handleUndoClick, handleNumberClick } from "./utils"
+import { numAllUsed, gameStatus, GameType, handleClearClick, handleUndoClick, handleNumberClick } from "./utils"
 
-function NumberButton({value, cells, mistakes, onClick}) {
+type NumberButtonProps = {
+	value: number;
+	cells: (number | null)[][];
+	mistakes: number;
+	onClick: () => void;
+}
+
+type ClearButtonProps = {
+	status: string;
+	onClick: () => void;
+	message: string;
+}
+
+type GameProps = {
+	initial: (number | null)[][];
+	solution: number[][];
+	game: GameType;
+	setGame: (game: GameType) => void;
+}
+
+function NumberButton({value, cells, mistakes, onClick}: NumberButtonProps) {
 	if (numAllUsed(value, cells) || mistakes >= 3) {
-		return (
-			<button className="btn-blank" /> 
-		)
+		return <button className="btn-blank" /> 
 	}
 	return <button className="btn" onClick={onClick} >{value}</button>
 }
 
-function ClearButton({status, onClick, message}) {
+function ClearButton({status, onClick, message}: ClearButtonProps) {
 	return <button className={status === "In Progress..." ? "btn-modes" : "btn-modes-blank"} onClick={onClick}>{status === "In Progress..." ? message : ""}</button>
 }
 
-export function Game({initial, solution, game, setGame}) {
+export function Game({initial, solution, game, setGame}: GameProps) {
 	const history = [...game.history]
 	const current = history[history.length - 1]
 	const cells = cloneDeep([...current.cells])
