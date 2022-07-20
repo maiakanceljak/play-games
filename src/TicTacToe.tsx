@@ -28,7 +28,7 @@ type GameType = {
 
 type BoardProps = {
 	game: GameType;
-	setGame: (game: GameType) => void;
+	setGame: (game: any) => void;
 }
 
 function calculateWinner(squares: (string | null)[]) {
